@@ -4,7 +4,6 @@
 template <class T>
 class TQueue
 {
-private:
 	T* pMem;
 	int size;
 	int finish, start;
@@ -36,199 +35,199 @@ public:
 };
 
 template <class T>
-inline TQueue<T>::TQueue() :size(10) {}
+TQueue<T>::TQueue() :size(10) {}
 
 // Конструктор с параметром для задания размера очереди
 template<class T>
-inline TQueue<T>::TQueue(int _size)
+TQueue<T>::TQueue(int _size)
 {
-    if (_size < 1)
-        throw std::exception();
-    
-    size = _size;
-    pMem = new T[size];
-    start = 0;
-    finish = -1;
-    count = 0;
+	if (_size < 1)
+		throw std::exception();
+
+	size = _size;
+	pMem = new T[size];
+	start = 0;
+	finish = -1;
+	count = 0;
 }
 
 // Деструктор освобождает выделенную память
 template<class T>
-inline TQueue<T>::~TQueue()
+TQueue<T>::~TQueue()
 {
-    delete[] pMem;
+	delete[] pMem;
 }
 
 // Конструктор копирования для создания копии очереди
 template<class T>
-inline TQueue<T>::TQueue(const TQueue& object)
+TQueue<T>::TQueue(const TQueue& object)
 {
-    delete[] pMem;
-    size = object.size;
-    pMem = new T[size];
-    std::copy(object.pMem, object.pMem + size, pMem);
-    start = object.start;
-    finish = object.finish;
-    count = object.count;
+	delete[] pMem;
+	size = object.size;
+	pMem = new T[size];
+	std::copy(object.pMem, object.pMem + size, pMem);
+	start = object.start;
+	finish = object.finish;
+	count = object.count;
 }
 
 // Метод проверки, пуста ли очередь
 template<class T>
-inline bool TQueue<T>::empty()
+bool TQueue<T>::empty()
 {
-    return count == 0;
+	return count == 0;
 }
 
 // Метод проверки, полна ли очередь
 template<class T>
-inline bool TQueue<T>::full()
+bool TQueue<T>::full()
 {
-    return count == size;
+	return count == size;
 }
 
 // Добавление элемента в очередь
 template<class T>
-inline void TQueue<T>::Push(const T& element)
+void TQueue<T>::Push(const T& element)
 {
-    if (full())
-    {
-        throw std::exception("Очедерь переполнена!", -2);
-    }
-    finish++; 
-    finish = finish % size; 
-    pMem[finish] = element; 
-    count++;
+	if (full())
+	{
+		throw std::exception("Очедерь переполнена!", -2);
+	}
+	finish++;
+	finish = finish % size;
+	pMem[finish] = element;
+	count++;
 }
 
 // Извлечение элемента из очереди
 template<class T>
-inline T TQueue<T>::Pop()
+T TQueue<T>::Pop()
 {
-    if (empty())
-        throw std::exception("Очередь пуста!", -1);
-    
-    T element = pMem[start];
-    start++;
-    start = start % size;
-    count--;
+	if (empty())
+		throw std::exception("Очередь пуста!", -1);
 
-    return element;
+	T element = pMem[start];
+	start++;
+	start = start % size;
+	count--;
+
+	return element;
 }
 
 // Метод получения элемента из начала очереди без удаления
 template<class T>
-inline T TQueue<T>::front()
+T TQueue<T>::front()
 {
-    if (this->empty())
-        throw std::exception("Очередь пуста!", -1);
-    
-    return pMem[start];
+	if (this->empty())
+		throw std::exception("Очередь пуста!", -1);
+
+	return pMem[start];
 }
 
 // Метод получения последнего элемента в очереди без удаления
 template<class T>
-inline T TQueue<T>::back()
+T TQueue<T>::back()
 {
-    if (this->empty())
-        throw std::exception("Очередь пуста!", -1);
-    
-    return pMem[finish];
+	if (this->empty())
+		throw std::exception("Очередь пуста!", -1);
+
+	return pMem[finish];
 }
 
 // Перегрузка оператора присваивания
 template<class T>
 void TQueue<T>::operator=(const TQueue& object)
 {
-    start = object.start;
-    finish = object.finish;
-    count = object.count;
-    if (count == object.count)
-    {
-        std::copy(object.pMem, object.pMem + size, pMem);
-    }
-    else
-    {
-        delete[] pMem;
-        size = object.size;
-        pMem = new T[size];
-        std::copy(object.pMem, object.pMem + size, pMem);
-    }
+	start = object.start;
+	finish = object.finish;
+	count = object.count;
+	if (count == object.count)
+	{
+		std::copy(object.pMem, object.pMem + size, pMem);
+	}
+	else
+	{
+		delete[] pMem;
+		size = object.size;
+		pMem = new T[size];
+		std::copy(object.pMem, object.pMem + size, pMem);
+	}
 }
 
 // Перегрузка оператора сравнения на равенство
 template<class T>
 bool TQueue<T>::operator==(const TQueue& object)
 {
-    if (count != object.count)
-    {
-        return false;
-    }
-    else
-    {
-        TQueue this_tmp = *this;
-        TQueue obj_tmp = object;
-        while (!this_tmp.empty())
-        {
-            if (this_tmp.front() != obj_tmp.front())
-            {
-                return false;
-            }
-            this_tmp.Pop();
-            obj_tmp.Pop();
-        }
-    }
+	if (count != object.count)
+	{
+		return false;
+	}
+	else
+	{
+		TQueue this_tmp = *this;
+		TQueue obj_tmp = object;
+		while (!this_tmp.empty())
+		{
+			if (this_tmp.front() != obj_tmp.front())
+			{
+				return false;
+			}
+			this_tmp.Pop();
+			obj_tmp.Pop();
+		}
+	}
 
-    return true;
+	return true;
 }
 
 // Перегрузка оператора сравнения на неравенство
 template<class T>
-inline bool TQueue<T>::operator!=(const TQueue& object)
+bool TQueue<T>::operator!=(const TQueue& object)
 {
-    return !(*this == object);
+	return !(*this == object);
 }
 
 // Метод получения индекса начала очереди.
 template<class T>
-inline int TQueue<T>::GetHeadIndex()
+int TQueue<T>::GetHeadIndex()
 {
-    return start;
+	return start;
 }
 
 // Метод получения текущего количества элементов в очереди
 template<class T>
-inline int TQueue<T>::GetCurrentSize()
+int TQueue<T>::GetCurrentSize()
 {
-    return count;
+	return count;
 }
 
 // Метод получения максимального размера очереди.
 template<class T>
-inline int TQueue<T>::GetMaxSize()
+int TQueue<T>::GetMaxSize()
 {
-    return size;
+	return size;
 }
 
 // Альтернативный метод для получения текущего количества элементов
 template<class T>
-inline int TQueue<T>::NumberOfElements()
+int TQueue<T>::NumberOfElements()
 {
-    return count;
+	return count;
 }
 
 // Метод вывода содержимого очереди на консоль.
 template<class T>
-inline void TQueue<T>::output()
+void TQueue<T>::output()
 {
-    if (this->empty())
-        throw std::exception("Очередь пуста!", -1);
-    
-    TQueue<T> this_tmp(*this);
-    std::cout << "(";
-    while (!(this_tmp.empty()))
-    {
-        std::cout << " " << this_tmp.Pop();
-    }
-    std::cout << " )";
-    std::cout << std::endl;
+	if (this->empty())
+		throw std::exception("Очередь пуста!", -1);
+
+	TQueue<T> this_tmp(*this);
+	std::cout << "(";
+	while (!(this_tmp.empty()))
+	{
+		std::cout << " " << this_tmp.Pop();
+	}
+	std::cout << " )";
+	std::cout << std::endl;
 }
